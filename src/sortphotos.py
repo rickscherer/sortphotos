@@ -9,15 +9,11 @@ Copyright (c) S. Andrew Ning. All rights reserved.
 """
 
 from __future__ import print_function
-from __future__ import with_statement
 import subprocess
 import os
 import sys
 import shutil
-try:
-    import json
-except:
-    import simplejson as json
+import json
 import filecmp
 from datetime import datetime, timedelta
 import re
@@ -46,8 +42,7 @@ def parse_date_exif(date_string):
     # parse year, month, day
     date_entries = elements[0].split(':')  # ['YYYY', 'MM', 'DD']
 
-    # check if three entries, nonzero data, and no decimal (which occurs for timestamps with only time but no date)
-    if len(date_entries) == 3 and date_entries[0] > '0000' and '.' not in ''.join(date_entries):
+    if len(date_entries) == 3 and date_entries[0] > '0000':
         year = int(date_entries[0])
         month = int(date_entries[1])
         day = int(date_entries[2])
@@ -329,12 +324,6 @@ def sortPhotos(src_dir, dest_dir, sort_format, rename_format, recursive=False,
                 print('No valid dates were found using the specified tags.  File will remain where it is.')
                 print()
                 # sys.stdout.flush()
-            continue
-
-        # ignore hidden files
-        if os.path.basename(src_file).startswith('.'):
-            print('hidden file.  will be skipped')
-            print()
             continue
 
         if verbose:
